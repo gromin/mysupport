@@ -194,4 +194,37 @@
 <script type="text/javascript" id="">function getParam(a){return(a=RegExp("[?\x26]"+a+"\x3d([^\x26]*)").exec(window.location.search))&&decodeURIComponent(a[1].replace(/\+/g," "))}function getExpiryRecord(a){var b=7776E6;b=(new Date).getTime()+b;return{value:a,expiryDate:b}}
 function addGclid(){var a=getParam("gclid"),b=["gclid_field","foobar"],d=null,e,c=getParam("gclsrc");c=!c||-1!==c.indexOf("aw");b.forEach(function(a){document.getElementById(a)&&(e=document.getElementById(a))});a&&c&&(d=getExpiryRecord(a),localStorage.setItem("gclid",JSON.stringify(d)));b=(a=d||JSON.parse(localStorage.getItem("gclid")))&&(new Date).getTime()<a.expiryDate;e&&b&&(e.value=a.value)}window.addEventListener("load",addGclid);</script>
 
+<script src="https://cdn.auth0.com/js/auth0-spa-js/1.2/auth0-spa-js.production.js"></script>
+<script type="text/javascript">
+  window.onload = async () => {
+    const auth0 = await createAuth0Client({domain: "gromin.eu.auth0.com", client_id: "7oxPT1OD6TVGoYbIh9y60TBSKuUx9FOD", redirect_uri: "https://gromin.github.io/mysupport/"});
+
+    const query = window.location.search;
+    if (query.includes("code=") && query.includes("state=")) {
+      await auth0.handleRedirectCallback();
+      window.history.replaceState({}, document.title, "/mysupport/");
+    }
+
+    const isAuth = await auth0.isAuthenticated();
+
+    console.log({isAuth});
+
+    if (!isAuth) {
+      await auth0.loginWithRedirect();
+    } else {
+      const token = await auth0.getTokenSilently();
+      console.log({token});
+
+      const user = await auth0.getUser();
+      console.log({user});
+
+      // document.querySelectorAll('.css-1k0rr9f')[0].innerHTML = user.name;
+      // document.querySelectorAll('.css-1lpz38u')[0].innerHTML = "Sign Out";
+      // document.querySelectorAll('.css-1lpz38u')[0].addEventListener('click', async function() {
+      //   await auth0.logout({returnTo: "https://gromin.github.io/mysupport/"});
+      // });
+    }
+  }
+</script>
+
 </body></html>
