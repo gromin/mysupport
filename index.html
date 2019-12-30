@@ -194,7 +194,7 @@
 <script type="text/javascript" id="">function getParam(a){return(a=RegExp("[?\x26]"+a+"\x3d([^\x26]*)").exec(window.location.search))&&decodeURIComponent(a[1].replace(/\+/g," "))}function getExpiryRecord(a){var b=7776E6;b=(new Date).getTime()+b;return{value:a,expiryDate:b}}
 function addGclid(){var a=getParam("gclid"),b=["gclid_field","foobar"],d=null,e,c=getParam("gclsrc");c=!c||-1!==c.indexOf("aw");b.forEach(function(a){document.getElementById(a)&&(e=document.getElementById(a))});a&&c&&(d=getExpiryRecord(a),localStorage.setItem("gclid",JSON.stringify(d)));b=(a=d||JSON.parse(localStorage.getItem("gclid")))&&(new Date).getTime()<a.expiryDate;e&&b&&(e.value=a.value)}window.addEventListener("load",addGclid);</script>
 
-<script src="http://localhost:3000/loader.js"></script>
+<script src="https://preboomtown.netlify.com/loader.js"></script>
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/1.2/auth0-spa-js.production.js"></script>
 <script type="text/javascript">
