@@ -194,10 +194,18 @@
 <script type="text/javascript" id="">function getParam(a){return(a=RegExp("[?\x26]"+a+"\x3d([^\x26]*)").exec(window.location.search))&&decodeURIComponent(a[1].replace(/\+/g," "))}function getExpiryRecord(a){var b=7776E6;b=(new Date).getTime()+b;return{value:a,expiryDate:b}}
 function addGclid(){var a=getParam("gclid"),b=["gclid_field","foobar"],d=null,e,c=getParam("gclsrc");c=!c||-1!==c.indexOf("aw");b.forEach(function(a){document.getElementById(a)&&(e=document.getElementById(a))});a&&c&&(d=getExpiryRecord(a),localStorage.setItem("gclid",JSON.stringify(d)));b=(a=d||JSON.parse(localStorage.getItem("gclid")))&&(new Date).getTime()<a.expiryDate;e&&b&&(e.value=a.value)}window.addEventListener("load",addGclid);</script>
 
-<script src="https://preboomtown.netlify.com/loader.js"></script>
+<!-- <script src="http://localhost:3000/loader.js"></script> -->
+<!-- <script src="https://preboomtown.netlify.com/loader.js"></script> -->
 
 <script src="https://cdn.auth0.com/js/auth0-spa-js/1.2/auth0-spa-js.production.js"></script>
 <script type="text/javascript">
+  // FIXME
+  let url = "https://preboomtown.netlify.com";
+  if (window.origin.includes("localhost")) {
+    url = "http://localhost:3000";
+  }
+  document.write("<script src='" + url + "/loader.js'>" + "</" + "script>");
+
   window.onload = async () => {
     const redirectUri = window.location.origin + window.location.pathname;
     const auth0 = await createAuth0Client({domain: "gromin.eu.auth0.com", client_id: "7oxPT1OD6TVGoYbIh9y60TBSKuUx9FOD", redirect_uri: redirectUri, audience: "https://fbr-test-api"});
@@ -231,20 +239,20 @@ function addGclid(){var a=getParam("gclid"),b=["gclid_field","foobar"],d=null,e,
       page.innerHTML = '<div id="root" style="min-height: 200px; text-align: center;">Only signed in users have access to this page</div>';
     } else {
       const token = await auth0.getTokenSilently();
-      console.log({token});
+      // console.log({token});
 
       const user = await auth0.getUser();
-      console.log({user});
+      // console.log({user});
 
       const claims = await auth0.getIdTokenClaims();
-      console.log({claims});
+      // console.log({claims});
 
       const userName = document.createElement("div");
       userName.innerHTML = user.email;
       signInButton.parentNode.insertBefore(userName, signInButton);
 
       if (Fogbender) {
-        Fogbender({rootEl: page, url: "https://preboomtown.netlify.com", token});
+        Fogbender({rootEl: page, url, token, user});
       }
     }
   }
